@@ -43,7 +43,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.sequence)
     return (
       <div className={this.state.isPrime ? "prime-mode" : "regular-fib"}>
         <div className="form-input">
