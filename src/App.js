@@ -24,10 +24,12 @@ class App extends Component {
     })
   }
 
+
+
   handleSubmit = (event) => {
     this.setState({sequence: ""})
     event.preventDefault()
-    fetch(`http://localhost:3001/fibs/fib_result/${this.state.user_input}/${this.state.isPrime}`)
+    fetch(`http://fib-api-mshapir.herokuapp.com/fibs/fib_result/${this.state.user_input}/${this.state.isPrime}`)
       .then((r) => {
       return r.json();
     })
