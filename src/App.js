@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SemipolarLoading } from 'react-loadingg';
 import ToggleButton from 'react-toggle-button'
 import './App.css';
 
@@ -9,7 +10,8 @@ class App extends Component {
     user_input: "",
     isPrime: false,
     sequence: [],
-    isHover: false
+    isHover: false,
+    isLoading: false
   }
 
   handleChange = (event) => {
@@ -27,19 +29,21 @@ class App extends Component {
 
 
   handleSubmit = (event) => {
-    this.setState({sequence: ""})
     event.preventDefault()
-    fetch(`https://fib-api-mshapir.herokuapp.com/fibs/fib_result/${this.state.user_input}/${this.state.isPrime}`)
+    this.setState({sequence: "", isLoading: true})
+    setTimeout(() => {
+      fetch(`https://fib-api-mshapir.herokuapp.com/fibs/fib_result/${this.state.user_input}/${this.state.isPrime}`)
       .then((r) => {
-      return r.json();
-    })
-    .then((data) => {
-      this.setState({
-        sequence: data.result,
-        user_input: ""
+        return r.json();
       })
-
-    });
+      .then((data) => {
+        this.setState({
+          sequence: data.result,
+          user_input: "",
+          isLoading: false
+        })
+      });
+    }, 1200)
   }
 
   render() {
@@ -64,8 +68,15 @@ class App extends Component {
             <button onClick={this.handleSubmit}> Submit </button>
           </form>
         </div>
+        {
+          this.state.isLoading ?
 
-        <p className="results"> Fibonacci Sequence: {this.state.sequence.length > 0 ? this.state.sequence.join(", ") : this.state.sequence}  </p>
+          <SemipolarLoading />
+
+          :
+
+          <p className="results"> Fibonacci Sequence: {this.state.sequence.length > 0 ? this.state.sequence.join(", ") : this.state.sequence}  </p>
+        }
       </div>
     );
   }
